@@ -40,7 +40,6 @@ def tradestats(start_date, end_date):
     for date in dates:
         df = stocks.tradestats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
-        logger.info('date {} loaded with {} rows', date, len(result_df.index))
 
     with st.expander('See DataFrame'):
       st.write(result_df)
@@ -57,7 +56,6 @@ def orderstats(start_date, end_date):
     for date in dates:
         df = stocks.orderstats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
-        logger.info('date {} loaded with {} rows', date, len(result_df.index))
 
     with st.expander('See DataFrame'):
       st.write(result_df)
@@ -74,7 +72,6 @@ def obstats(start_date, end_date):
     for date in dates:
         df = stocks.obstats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
-        logger.info('date {} loaded with {} rows', date, len(result_df.index))
     
     with st.expander('See DataFrame'):
       st.write(result_df)
@@ -112,7 +109,6 @@ def main():
 
     # Options selection
     selected_option = st.radio("Выберите нужные данные для анализа:", options=list(options_mapping.keys()), index=None)
-    logger.info('options_mapping {}', options_mapping[selected_option])
 
     question_list = [
       'Какая акция самая дорогая?',
