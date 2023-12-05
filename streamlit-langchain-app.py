@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+import datetime
 import pandas as pd
 
 from langchain.agents.agent_types import AgentType
@@ -27,7 +27,7 @@ TOKEN = os.getenv("TOKEN")
 
 def _generate_date_range(start_date, end_date):
     date_range = [
-        (start_date + timedelta(days=x)) for x in range((end_date - start_date).days + 1)
+        (start_date + datetime.timedelta(days=x)) for x in range((end_date - start_date).days + 1)
     ]
     return date_range
 
@@ -105,12 +105,12 @@ def main():
     }
 
     # Date selection - Start Date
-    start_date = st.date_input("Выберите начало периода:", datetime.today(), key="start_date")
-    logger.info('start_date {} has type {}', start_date, type(start_date))
+    start_date = st.date_input("Выберите начало периода:", datetime.datetime.today(), key="start_date")
+    #logger.info('start_date {} has type {}', start_date, type(start_date))
 
     # Date selection - End Date
-    end_date = st.date_input("Выберите конец периода:", datetime.today(), key="end_date")
-    logger.info('end_date {} has type {}', end_date, type(end_date))
+    end_date = st.date_input("Выберите конец периода:", datetime.datetime.today(), key="end_date")
+    #logger.info('end_date {} has type {}', end_date, type(end_date))
 
     # Options selection
     selected_option = st.radio("Выберите нужные данные для анализа:", options_mapping.keys(), index=None)
