@@ -13,8 +13,8 @@ from moexalgo import Market
 
 
 # # Page title
-st.set_page_config(page_title='🦜🔗 GPT для анализа данных биржи')
-st.title('🦜🔗 GPT для анализа данных биржи')
+st.set_page_config(page_title='🦜🔗 GPT для анализа данных Московской биржи')
+st.title('🦜🔗 GPT для анализа данных Московской биржи')
 
 load_dotenv()
 
@@ -26,7 +26,7 @@ def _generate_date_range(start_date, end_date):
     current_date = start_date
 
     while current_date <= end_date:
-        date_range.append(current_date.date())
+        date_range.append(current_date)
         current_date += timedelta(days=1)
 
     return date_range
@@ -111,7 +111,7 @@ def main():
     end_date = st.date_input("Выберите конец периода:", datetime.today(), key="end_date")
 
     # Options selection
-    selected_option = st.radio("Выберите нужные данные для анализа:", options_mapping.keys())
+    selected_option = st.radio("Выберите нужные данные для анализа:", options_mapping.keys(), index=None)
 
     question_list = [
       'Какая акция самая дорогая?',
