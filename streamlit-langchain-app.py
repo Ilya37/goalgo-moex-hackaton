@@ -106,6 +106,15 @@ def main():
     # Date selection - End Date
     end_date = st.date_input("Выберите конец периода:", datetime.today(), key="end_date")
 
+    ##this uses streamlit 'magic'!!!!
+    "The date selected:", start_date
+    "The type", type(start_date)
+    "Singling out a date for dataframe filtering", start_date[0]
+
+    "The date selected:", end_date
+    "The type", type(end_date)
+    "Singling out a date for dataframe filtering", end_date[0]
+
     # Options selection
     selected_option = st.radio("Выберите нужные данные для анализа:", options_mapping.keys(), index=None)
 
