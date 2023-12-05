@@ -91,7 +91,7 @@ def generate_response(df, input_query, openai_api_key):
 
 
 # Streamlit app
-def main():
+def main(): 
     # Options menu with business mapping
     options_mapping = {
         "Сделки": tradestats,
@@ -109,12 +109,14 @@ def main():
 
     # Options selection
     selected_option = st.radio("Выберите нужные данные для анализа:", options=list(options_mapping.keys()), index=None)
+    logger.info('{}', type(options_mapping[selected_option]))
 
     question_list = [
       'Какая акция самая дорогая?',
       'По какой акции было больше всего сделок?',
       'Какая акция имеет большие шансы на рост цены?',
-      'Другое']
+      'Другое',
+    ]
     query_text = st.selectbox('Выберите пример вопроса:', question_list, disabled=not selected_option)
     openai_api_key = st.text_input('Введите OpenAI API Key', type='password', value=TOKEN, disabled=not (selected_option and query_text))
 
