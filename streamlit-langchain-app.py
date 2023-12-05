@@ -7,14 +7,18 @@ from langchain.chat_models import ChatOpenAI
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
 from langchain.llms import OpenAI
 import streamlit as st
+from streamlit.logger import get_logger
 from dotenv import load_dotenv
 
 from moexalgo import Market
+
+logger = get_logger(__name__)
 
 
 # # Page title
 st.set_page_config(page_title='🦜🔗 GPT для анализа данных Московской биржи')
 st.title('🦜🔗 GPT для анализа данных Московской биржи')
+
 
 load_dotenv()
 
@@ -38,7 +42,7 @@ def tradestats(start_date, end_date):
     for date in dates:
         df = stocks.tradestats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
-        print(f'date {date} loaded with {len(df.index)} rows')
+        logger.info(f'date {date} loaded with {len(df.index)} rows')
 
     with st.expander('See DataFrame'):
       st.write(result_df)
@@ -55,7 +59,7 @@ def orderstats(start_date, end_date):
     for date in dates:
         df = stocks.orderstats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
-        print(f'date {date} loaded with {len(df.index)} rows')
+        logger.info(f'date {date} loaded with {len(df.index)} rows')
 
     with st.expander('See DataFrame'):
       st.write(result_df)
@@ -72,7 +76,7 @@ def obstats(start_date, end_date):
     for date in dates:
         df = stocks.obstats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
-        print(f'date {date} loaded with {len(df.index)} rows')
+        logger.info(f'date {date} loaded with {len(df.index)} rows')
     
     with st.expander('See DataFrame'):
       st.write(result_df)
@@ -102,18 +106,11 @@ def main():
 
     # Date selection - Start Date
     start_date = st.date_input("Выберите начало периода:", datetime.today(), key="start_date")
+    logger.info(f'start_date {start_date} has type {len(start_date)}')
 
     # Date selection - End Date
     end_date = st.date_input("Выберите конец периода:", datetime.today(), key="end_date")
-
-    ##this uses streamlit 'magic'!!!!
-    "The date selected:", start_date
-    "The type", type(start_date)
-    "Singling out a date for dataframe filtering", start_date[0]
-
-    "The date selected:", end_date
-    "The type", type(end_date)
-    "Singling out a date for dataframe filtering", end_date[0]
+    logger.info(f'end_date {end_date} has type {len(end_date)}')
 
     # Options selection
     selected_option = st.radio("Выберите нужные данные для анализа:", options_mapping.keys(), index=None)
@@ -137,8 +134,6 @@ def main():
         generate_response(result, query_text, openai_api_key)
       except Exception as e:
         st.error(f"Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}). Повторите попытку позднее")
-
-    
 
 
 if __name__ == "__main__":
