@@ -1,7 +1,6 @@
 import os
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 import pandas as pd
-import numpy as np
 
 from langchain.agents.agent_types import AgentType
 from langchain.chat_models import ChatOpenAI
@@ -10,7 +9,7 @@ from langchain.llms import OpenAI
 import streamlit as st
 from dotenv import load_dotenv
 
-from moexalgo import Market, Ticker
+from moexalgo import Market
 
 
 # # Page title
