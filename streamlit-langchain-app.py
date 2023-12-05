@@ -127,11 +127,10 @@ def main():
       st.warning('Введите ваш OpenAI API key!', icon='⚠')
     if openai_api_key.startswith('sk-') and (selected_option is not None):
       st.header('Результаты:')
+      logger.info('options_mapping {}', options_mapping)
+      logger.info('selected_option {}', selected_option)
       try:
         result = options_mapping[selected_option](start_date, end_date)
-        options_mapping
-        logger.info('options_mapping {}', options_mapping)
-        logger.info('selected_option {}', selected_option)
         generate_response(result, query_text, openai_api_key)
       except Exception as e:
         st.error(f"Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}). Повторите попытку позднее")
