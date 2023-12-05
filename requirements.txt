@@ -1,0 +1,7 @@
+langchain
+langchain_experimental
+openai
+moexalgo
+streamlit
+tabulate
+python-dotenv
