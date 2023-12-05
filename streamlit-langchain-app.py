@@ -26,7 +26,7 @@ TOKEN = os.getenv("TOKEN")
 
 
 def _generate_date_range(start_date, end_date):
-    date_range = [(start_date + timedelta(days=x)).date() for x in range((end_date - start_date).days + 1)]
+    date_range = [(start_date + timedelta(days=x)) for x in range((end_date - start_date).days + 1)]
     return date_range
 
 
@@ -129,6 +129,9 @@ def main():
       st.header('Результаты:')
       try:
         result = options_mapping[selected_option](start_date, end_date)
+        options_mapping
+        logger.info('options_mapping {}', options_mapping)
+        logger.info('selected_option {}', selected_option)
         generate_response(result, query_text, openai_api_key)
       except Exception as e:
         st.error(f"Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}). Повторите попытку позднее")
