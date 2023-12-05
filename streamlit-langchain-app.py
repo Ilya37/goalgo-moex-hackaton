@@ -21,10 +21,21 @@ load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
 
+def _generate_date_range(start_date, end_date):
+    date_range = []
+    current_date = start_date
+
+    while current_date <= end_date:
+        date_range.append(current_date)
+        current_date += timedelta(days=1)
+
+    return date_range
+
+
 # Define your business logic functions or variables
 def tradestats(start_date, end_date):
     stocks = Market('stocks')
-    dates = [(end_date - start_date).date() for i in range(10)]
+    dates = _generate_date_range(start_date, end_date)
 
     result_df = pd.DataFrame()
 
@@ -41,7 +52,7 @@ def tradestats(start_date, end_date):
 
 def orderstats(start_date, end_date):
     stocks = Market('stocks')
-    dates = [(end_date - start_date).date() for i in range(10)]
+    dates = _generate_date_range(start_date, end_date)
 
     result_df = pd.DataFrame()
 
@@ -58,7 +69,7 @@ def orderstats(start_date, end_date):
 
 def obstats(start_date, end_date):
     stocks = Market('stocks')
-    dates = [(end_date - start_date).date() for i in range(10)]
+    dates = _generate_date_range(start_date, end_date)
 
     result_df = pd.DataFrame()
 
@@ -115,7 +126,7 @@ def main():
     if not openai_api_key.startswith('sk-'):
       st.warning('Введите ваш OpenAI API key!', icon='⚠')
     if openai_api_key.startswith('sk-') and (selected_option is not None):
-      st.header('Выводы:')
+      st.header('Результаты:')
       try:
         result = options_mapping[selected_option](start_date, end_date)
         generate_response(result, query_text, openai_api_key)
