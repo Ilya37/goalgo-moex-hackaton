@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import pandas as pd
 import numpy as np
 
@@ -11,6 +11,7 @@ import streamlit as st
 from dotenv import load_dotenv
 
 from moexalgo import Market, Ticker
+
 
 # # Page title
 st.set_page_config(page_title='🦜🔗 GPT для анализа данных биржи')
@@ -26,7 +27,7 @@ def _generate_date_range(start_date, end_date):
     current_date = start_date
 
     while current_date <= end_date:
-        date_range.append(current_date)
+        date_range.append(current_date.date())
         current_date += timedelta(days=1)
 
     return date_range
@@ -119,10 +120,10 @@ def main():
       'Какая акция имеет большие шансы на рост цены?',
       'Другое']
     query_text = st.selectbox('Выберите пример вопроса:', question_list, disabled=not selected_option)
-    openai_api_key = st.text_input('Введите OpenAI API Key', type='password', disabled=not (selected_option and query_text))
+    openai_api_key = st.text_input('Введите OpenAI API Key', type='password', value=TOKEN, disabled=not (selected_option and query_text))
 
     if query_text == 'Другое':
-      query_text = st.text_input('Введите ваш запрос:', value=TOKEN, disabled=not selected_option)
+      query_text = st.text_input('Введите ваш запрос:', disabled=not selected_option)
     if not openai_api_key.startswith('sk-'):
       st.warning('Введите ваш OpenAI API key!', icon='⚠')
     if openai_api_key.startswith('sk-') and (selected_option is not None):
