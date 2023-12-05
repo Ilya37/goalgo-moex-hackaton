@@ -111,7 +111,7 @@ def main():
     #logger.info('end_date {} has type {}', end_date, type(end_date))
 
     # Options selection
-    selected_option = st.radio("Выберите нужные данные для анализа:", options_mapping.keys(), index=None)
+    selected_option = st.selectbox("Выберите нужные данные для анализа:", options=list(options_mapping.keys()), index=None)
 
     question_list = [
       'Какая акция самая дорогая?',
