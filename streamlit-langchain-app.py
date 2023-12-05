@@ -42,7 +42,7 @@ def tradestats(start_date, end_date):
     for date in dates:
         df = stocks.tradestats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
-        logger.info(f'date {date} loaded with {len(df.index)} rows')
+        logger.info('date {} loaded with {} rows', date, len(result_df.index))
 
     with st.expander('See DataFrame'):
       st.write(result_df)
@@ -59,7 +59,7 @@ def orderstats(start_date, end_date):
     for date in dates:
         df = stocks.orderstats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
-        logger.info(f'date {date} loaded with {len(df.index)} rows')
+        logger.info('date {} loaded with {} rows', date, len(result_df.index))
 
     with st.expander('See DataFrame'):
       st.write(result_df)
@@ -76,7 +76,7 @@ def obstats(start_date, end_date):
     for date in dates:
         df = stocks.obstats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
-        logger.info(f'date {date} loaded with {len(df.index)} rows')
+        logger.info('date {} loaded with {} rows', date, len(result_df.index))
     
     with st.expander('See DataFrame'):
       st.write(result_df)
@@ -106,11 +106,11 @@ def main():
 
     # Date selection - Start Date
     start_date = st.date_input("Выберите начало периода:", datetime.today(), key="start_date")
-    logger.info(f'start_date {start_date} has type {len(start_date)}')
+    logger.info('start_date {} has type {}', start_date, type(start_date))
 
     # Date selection - End Date
     end_date = st.date_input("Выберите конец периода:", datetime.today(), key="end_date")
-    logger.info(f'end_date {end_date} has type {len(end_date)}')
+    logger.info('end_date {} has type {}', end_date, type(end_date))
 
     # Options selection
     selected_option = st.radio("Выберите нужные данные для анализа:", options_mapping.keys(), index=None)
