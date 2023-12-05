@@ -127,8 +127,7 @@ def main():
       st.warning('Введите ваш OpenAI API key!', icon='⚠')
     if openai_api_key.startswith('sk-') and (selected_option is not None):
       st.header('Результаты:')
-      logger.info('options_mapping {}', options_mapping)
-      logger.info('selected_option {}', selected_option)
+      logger.info('options_mapping {}', options_mapping[selected_option])
       try:
         result = options_mapping[selected_option](start_date, end_date)
         generate_response(result, query_text, openai_api_key)
