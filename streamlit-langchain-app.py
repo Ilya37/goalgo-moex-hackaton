@@ -8,21 +8,17 @@ from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe
 from langchain.llms import OpenAI
 import streamlit as st
 from streamlit.logger import get_logger
-from dotenv import load_dotenv
 
 from moexalgo import Market
 
 logger = get_logger(__name__)
 
+TOKEN = st.secrets["TOKEN"]
+
 
 # # Page title
-st.set_page_config(page_title='🦜🔗 GPT для анализа данных Московской биржи')
-st.title('🦜🔗 GPT для анализа данных Московской биржи')
-
-
-load_dotenv()
-
-TOKEN = os.getenv("TOKEN")
+st.set_page_config(page_title='🛋️👨‍💻 Диванные эксперты - GPT для анализа данных Московской биржи')
+st.title('🦜🔗 Диванные эксперты - GPT для анализа данных Московской биржи')
 
 
 def _generate_date_range(start_date, end_date):
@@ -118,12 +114,23 @@ def main():
       'Другое',
     ]
     query_text = st.selectbox('Выберите пример вопроса:', question_list, disabled=not selected_option)
-    openai_api_key = st.text_input('Введите OpenAI API Key', type='password', value=TOKEN, disabled=not (selected_option and query_text))
+    openai_api_key = st.text_input('Введите ключ для API:', type='password', value=TOKEN, disabled=not (selected_option and query_text))
+
+    st.markdown(
+        """
+    <style>
+        [title="Show password text"] {
+            display: none;
+        }
+    </style>
+    """,
+        unsafe_allow_html=True,
+    )
 
     if query_text == 'Другое':
       query_text = st.text_input('Введите ваш запрос:', disabled=not selected_option)
     if not openai_api_key.startswith('sk-'):
-      st.warning('Введите ваш OpenAI API key!', icon='⚠')
+      st.warning('Введите ключ для API!', icon='⚠')
     if openai_api_key.startswith('sk-') and (selected_option is not None):
       st.header('Результаты:')
       try:
