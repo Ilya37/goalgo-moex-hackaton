@@ -39,8 +39,8 @@ def tradestats(start_date, end_date):
         df = stocks.tradestats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
 
-    with st.expander('See DataFrame'):
-      st.write(result_df)
+    with st.expander('Предпросмотр полученных данных:'):
+      st.write(result_df.head(10))
     
     return result_df
 
@@ -55,8 +55,8 @@ def orderstats(start_date, end_date):
         df = stocks.orderstats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
 
-    with st.expander('See DataFrame'):
-      st.write(result_df)
+    with st.expander('Предпросмотр полученных данных:'):
+      st.write(result_df.head(10))
     
     return result_df
 
@@ -71,8 +71,8 @@ def obstats(start_date, end_date):
         df = stocks.obstats(date=date)
         result_df = pd.concat([result_df, df], ignore_index=True)
     
-    with st.expander('See DataFrame'):
-      st.write(result_df)
+    with st.expander('Предпросмотр полученных данных:'):
+      st.write(result_df.head(10))
 
     return result_df
 
@@ -116,24 +116,11 @@ def main():
       'Другое',
     ]
     query_text = st.selectbox('Выберите пример вопроса:', question_list, disabled=not selected_option)
-    openai_api_key = st.text_input('Введите ключ для API:', type='password', value=TOKEN, disabled=not (selected_option and query_text))
-
-    st.markdown(
-        """
-    <style>
-        [title="Show password text"] {
-            display: none;
-        }
-    </style>
-    """,
-        unsafe_allow_html=True,
-    )
+    openai_api_key = TOKEN
 
     if query_text == 'Другое':
       query_text = st.text_input('Введите ваш запрос:', disabled=not selected_option)
-    if not openai_api_key.startswith('sk-'):
-      st.warning('Введите ключ для API!', icon='⚠')
-    if openai_api_key.startswith('sk-') and (selected_option is not None):
+    if selected_option is not None:
       st.header('Результаты:')
       try:
         result = options_mapping[selected_option](start_date, end_date)
