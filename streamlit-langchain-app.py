@@ -18,7 +18,9 @@ TOKEN = st.secrets["TOKEN"]
 
 # # Page title
 st.set_page_config(page_title='🛋️👨‍💻 Диванные эксперты - GPT для анализа данных Московской биржи')
-st.title('🦜🔗 Диванные эксперты - GPT для анализа данных Московской биржи')
+st.title('🛋️👨‍💻 Диванные эксперты - GPT для анализа данных Московской биржи')
+
+st.text("""MVP решения от команды "Диванные эксперты" хакатона Go Algo от Московской биржи""")
 
 
 def _generate_date_range(start_date, end_date):
