@@ -99,9 +99,9 @@ def generate_response(df, input_query):
 def main(): 
     # Options menu with business mapping
     options_mapping = {
-        "Сделки": tradestats,
-        "Заявки": orderstats,
-        "Стакан заявок": obstats,
+        "Сделки": "tradestats",
+        "Заявки": "orderstats",
+        "Стакан заявок": "obstats",
     }
 
     # Date selection - Start Date
