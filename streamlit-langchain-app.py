@@ -28,6 +28,15 @@ def generate_date_range(start_date, end_date):
     return date_range
 
 
+def load_data(option, start_date, end_date):
+    if option == 'tradestats':
+       tradestats(start_date, end_date)
+    if option == 'orderstats':
+       orderstats(start_date, end_date)
+    if option == 'obstats':
+       obstats(start_date, end_date)
+    
+
 # Define your business logic functions or variables
 def tradestats(start_date, end_date):
     stocks = Market('stocks')
@@ -79,11 +88,9 @@ def obstats(start_date, end_date):
 
 
 # Generate LLM response
-def generate_response(df, input_query, openai_api_key):
-  llm = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.2, openai_api_key=openai_api_key)
-  # Create Pandas DataFrame Agent
+def generate_response(df, input_query):
+  llm = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.2, openai_api_key=TOKEN)
   agent = create_pandas_dataframe_agent(llm, df, verbose=True, agent_type=AgentType.OPENAI_FUNCTIONS)
-  # Perform Query using the Agent
   response = agent.run(input_query)
   return st.success(response, icon="✅")
 
@@ -99,15 +106,12 @@ def main():
 
     # Date selection - Start Date
     start_date = st.date_input("Выберите начало периода:", datetime.today(), key="start_date")
-    #logger.info('start_date {} has type {}', start_date, type(start_date))
 
     # Date selection - End Date
     end_date = st.date_input("Выберите конец периода:", datetime.today(), key="end_date")
-    #logger.info('end_date {} has type {}', end_date, type(end_date))
 
     # Options selection
     selected_option = st.radio("Выберите нужные данные для анализа:", options=list(options_mapping.keys()), index=None)
-    logger.info('{}', type(options_mapping[selected_option]))
 
     question_list = [
       'Какая акция самая дорогая?',
@@ -116,15 +120,14 @@ def main():
       'Другое',
     ]
     query_text = st.selectbox('Выберите пример вопроса:', question_list, disabled=not selected_option)
-    openai_api_key = TOKEN
 
     if query_text == 'Другое':
       query_text = st.text_input('Введите ваш запрос:', disabled=not selected_option)
     if selected_option is not None:
       st.header('Результаты:')
       try:
-        result = options_mapping[selected_option](start_date, end_date)
-        generate_response(result, query_text, openai_api_key)
+        result = load_data(start_date, end_date)
+        generate_response(result, query_text)
       except Exception as e:
         st.error(f"Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}). Повторите попытку позднее")
 
