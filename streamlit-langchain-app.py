@@ -173,7 +173,7 @@ def main():
 
     strategies = ["SMA Cross", "Mean Reversion"]
 
-    selected_strategy = st.radio("Выберите нужную частоту сбора данных по свечам:", options=strategies, index=None)
+    selected_strategy = st.radio("Выберите стратегию для запуска:", options=strategies, index=None)
 
     st.write("""Изучите дополнительную информацию о стратегиях [SMA Cross](https://docs.gunthy.org/docs/built-in-strategies/futures-strategies/builder/smacross/) 
              и [MeanReversion](https://www.cmcmarkets.com/en/trading-guides/mean-reversion) 
