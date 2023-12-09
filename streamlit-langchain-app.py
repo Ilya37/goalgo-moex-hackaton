@@ -128,7 +128,7 @@ def main():
     result = load_data('tradestats', yesterday, yesterday)
 
     # Group by 'Ticker' and calculate the sum of 'Number_of_Trades' for each ticker
-    total_trades_per_ticker = result.groupby('ticker')['trades_b'].sum()
+    total_trades_per_ticker = result.groupby('secid')['trades_b'].sum()
     # Sort the tickers based on the total number of trades in descending order
     sorted_tickers = total_trades_per_ticker.sort_values(ascending=False).index.tolist()
         
