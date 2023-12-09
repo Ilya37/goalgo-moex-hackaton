@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[44]:
-
 
 from moexalgo import Market, Ticker
 from prophet import Prophet
 import pandas as pd
+
 
 class StockPredictor:
     """
@@ -42,7 +41,7 @@ class StockPredictor:
         self.ticker = ticker
         self.predictions = None
         self.days_to_predicts = days_to_predicts
-        self.m = None # model
+        self.m = None  # model
 
     def get_data(self, min_date='2021-10-10', max_date='2023-12-04'):
         """
@@ -87,7 +86,7 @@ class StockPredictor:
         future = self.m.make_future_dataframe(periods=self.days_to_predicts)
         self.predictions = self.m.predict(future)
         return self.predictions
-    
+
     def plot(self):
         """
         Plot the forecasted data.
@@ -96,13 +95,10 @@ class StockPredictor:
         -------
         None
         """
-        self.m.plot(forecast,  xlabel=self.ticker, ylabel='close', plot_cap=False);
+        self.m.plot(forecast, xlabel=self.ticker, ylabel='close', plot_cap=False);
+
 
 if __name__ == "__main__":
     stock_predictor = StockPredictor("SBER")
     forecast = stock_predictor.train_model()
     stock_predictor.plot()
-
-
-
-

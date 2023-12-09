@@ -59,7 +59,12 @@ def run_sma_cross_strategy_plot(df):
     sma_cross_strategy = Backtest(df, SmaCross, commission=.002,
                                   exclusive_orders=True)
     sma_cross_strategy.run()
-    return sma_cross_strategy.plot()
+    return sma_cross_strategy.plot(filename='Оценка стратегии', plot_width=None,
+             plot_equity=True, plot_return=True, plot_pl=True,
+             plot_volume=True, plot_drawdown=True,
+             smooth_equity=False, relative_equity=True,
+             resample=True, reverse_indicators=False,
+             show_legend=True, open_browser=True)
 
 
 def run_mean_reversion_stats(df):
