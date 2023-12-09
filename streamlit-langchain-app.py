@@ -30,63 +30,98 @@ def generate_date_range(start_date, end_date):
 
 def load_data(option, start_date, end_date):
     if option == 'tradestats':
-       result_df = tradestats(start_date, end_date)
+       stocks = Market('stocks')
+       dates = generate_date_range(start_date, end_date)
+ 
+       result_df = pd.DataFrame()
+ 
+       for date in dates:
+           df = stocks.tradestats(date=date)
+           result_df = pd.concat([result_df, df], ignore_index=True)
+ 
+       with st.expander('Предпросмотр полученных данных:'):
+         st.write(result_df.head(10))
+       
        return result_df
+
     if option == 'orderstats':
-       result_df = orderstats(start_date, end_date)
+       stocks = Market('stocks')
+       dates = generate_date_range(start_date, end_date)
+ 
+       result_df = pd.DataFrame()
+ 
+       for date in dates:
+           df = stocks.orderstats(date=date)
+           result_df = pd.concat([result_df, df], ignore_index=True)
+ 
+       with st.expander('Предпросмотр полученных данных:'):
+         st.write(result_df.head(10))
+       
        return result_df
+    
     if option == 'obstats':
-       result_df = obstats(start_date, end_date)
+       stocks = Market('stocks')
+       dates = generate_date_range(start_date, end_date)
+   
+       result_df = pd.DataFrame()
+   
+       for date in dates:
+           df = stocks.obstats(date=date)
+           result_df = pd.concat([result_df, df], ignore_index=True)
+       
+       with st.expander('Предпросмотр полученных данных:'):
+         st.write(result_df.head(10))
+   
        return result_df
     
 
-# Define your business logic functions or variables
-def tradestats(start_date, end_date):
-    stocks = Market('stocks')
-    dates = generate_date_range(start_date, end_date)
+# # Define your business logic functions or variables
+# def tradestats(start_date, end_date):
+#     stocks = Market('stocks')
+#     dates = generate_date_range(start_date, end_date)
 
-    result_df = pd.DataFrame()
+#     result_df = pd.DataFrame()
 
-    for date in dates:
-        df = stocks.tradestats(date=date)
-        result_df = pd.concat([result_df, df], ignore_index=True)
+#     for date in dates:
+#         df = stocks.tradestats(date=date)
+#         result_df = pd.concat([result_df, df], ignore_index=True)
 
-    with st.expander('Предпросмотр полученных данных:'):
-      st.write(result_df.head(10))
+#     with st.expander('Предпросмотр полученных данных:'):
+#       st.write(result_df.head(10))
     
-    return result_df
+#     return result_df
 
 
-def orderstats(start_date, end_date):
-    stocks = Market('stocks')
-    dates = generate_date_range(start_date, end_date)
+# def orderstats(start_date, end_date):
+#     stocks = Market('stocks')
+#     dates = generate_date_range(start_date, end_date)
 
-    result_df = pd.DataFrame()
+#     result_df = pd.DataFrame()
 
-    for date in dates:
-        df = stocks.orderstats(date=date)
-        result_df = pd.concat([result_df, df], ignore_index=True)
+#     for date in dates:
+#         df = stocks.orderstats(date=date)
+#         result_df = pd.concat([result_df, df], ignore_index=True)
 
-    with st.expander('Предпросмотр полученных данных:'):
-      st.write(result_df.head(10))
+#     with st.expander('Предпросмотр полученных данных:'):
+#       st.write(result_df.head(10))
     
-    return result_df
+#     return result_df
 
 
-def obstats(start_date, end_date):
-    stocks = Market('stocks')
-    dates = generate_date_range(start_date, end_date)
+# def obstats(start_date, end_date):
+#     stocks = Market('stocks')
+#     dates = generate_date_range(start_date, end_date)
 
-    result_df = pd.DataFrame()
+#     result_df = pd.DataFrame()
 
-    for date in dates:
-        df = stocks.obstats(date=date)
-        result_df = pd.concat([result_df, df], ignore_index=True)
+#     for date in dates:
+#         df = stocks.obstats(date=date)
+#         result_df = pd.concat([result_df, df], ignore_index=True)
     
-    with st.expander('Предпросмотр полученных данных:'):
-      st.write(result_df.head(10))
+#     with st.expander('Предпросмотр полученных данных:'):
+#       st.write(result_df.head(10))
 
-    return result_df
+#     return result_df
 
 
 
