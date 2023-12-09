@@ -22,12 +22,16 @@ st.text("""MVP решения от команды "Диванные экспер
 
 
 def generate_date_range(start_date, end_date):
+    """Generate a list of dates within the specified range."""
     date_range = [start_date + timedelta(days=x) for x in range((end_date - start_date).days + 1)]
     return date_range
 
 
 @st.cache_data
 def load_market_data(option, start_date, end_date):
+    """
+    Load market data based on the specified option and date range.
+    """
     stocks = Market('stocks')
     dates = generate_date_range(start_date, end_date)
 
@@ -69,6 +73,9 @@ def load_market_data(option, start_date, end_date):
 
 @st.cache_data
 def load_ticker_data(selected_ticker, start_date_ticker, end_date_ticker, frequency):
+    """
+    Load ticker data based on the specified ticker, date range, and frequency.
+    """
     ticker = Ticker(selected_ticker)
     response = ticker.candles(date=start_date_ticker, till_date=end_date_ticker, period=frequency) 
     result_df = pd.DataFrame(response)
@@ -86,6 +93,9 @@ def load_ticker_data(selected_ticker, start_date_ticker, end_date_ticker, freque
 
 # Generate LLM response
 def generate_response(df, input_query):
+  """
+  Generate a response using the specified dataframe and input query.
+  """
   llm = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.2, openai_api_key=TOKEN)
   agent = create_pandas_dataframe_agent(llm, df, verbose=True, 
                                         agent_type=AgentType.OPENAI_FUNCTIONS, handle_parsing_errors=True)
@@ -95,6 +105,9 @@ def generate_response(df, input_query):
 
 # Streamlit app
 def main(): 
+    """
+    Main function to run the Streamlit app.
+    """
     # Options menu with business mapping
 
     st.subheader('Проведите разведочный анализ данных биржи', divider='rainbow')
@@ -184,10 +197,11 @@ def main():
       ticker_df = load_ticker_data(selected_ticker, start_date_ticker, end_date_ticker, frequency_mapping[frequency])
 
     if selected_strategy == "SMA Cross":
-       st.write(run_sma_cross_strategy_stats(ticker_df))
+       st.write(pd.DataFrame(run_sma_cross_strategy_stats(ticker_df)))
        st.write(run_sma_cross_strategy_plot(ticker_df))
+
     if selected_strategy == "Mean Reversion":
-       st.write(run_mean_reversion_stats(ticker_df))
+       st.write(pd.DataFrame(run_mean_reversion_stats(ticker_df)))
        st.write(run_mean_reversion_plot(ticker_df))
 
 
