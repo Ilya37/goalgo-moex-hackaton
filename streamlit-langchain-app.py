@@ -136,11 +136,11 @@ def generate_response(df, input_query):
 # Streamlit app
 def main(): 
     # Options menu with business mapping
-    # options_mapping = {
-    #     "Сделки": "tradestats",
-    #     "Заявки": "orderstats",
-    #     "Стакан заявок": "obstats",
-    # }
+    options_mapping = {
+        "Сделки": "tradestats",
+        "Заявки": "orderstats",
+        "Стакан заявок": "obstats",
+    }
 
     options = ["Сделки", "Заявки", "Стакан заявок"]
 
@@ -151,7 +151,7 @@ def main():
     end_date = st.date_input("Выберите конец периода:", datetime.today(), key="end_date")
 
     # Options selection
-    selected_option = st.radio("Выберите нужные данные для анализа:", options=options, index=None)
+    selected_option = st.radio("Выберите нужные данные для анализа:", options=list(options_mapping.keys()), index=None)
 
     question_list = [
       'Какая акция самая дорогая?',
@@ -161,15 +161,19 @@ def main():
     ]
     query_text = st.selectbox('Выберите пример вопроса:', question_list, disabled=not selected_option)
 
-    if query_text == 'Другое':
-      query_text = st.text_input('Введите ваш запрос:', disabled=not selected_option)
-    if selected_option is not None:
-      st.header('Результаты:')
-      try:
-        result = load_data(selected_option, start_date, end_date)
-        generate_response(result, query_text)
-      except Exception as e:
-        st.error(f"Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}). Повторите попытку позднее")
+    result = load_data(options_mapping[selected_option], start_date, end_date)
+
+    result.head()
+
+    # if query_text == 'Другое':
+    #   query_text = st.text_input('Введите ваш запрос:', disabled=not selected_option)
+    # if selected_option is not None:
+    #   st.header('Результаты:')
+    #   try:
+    #     result = load_data(options_mapping[selected_option], start_date, end_date)
+    #     generate_response(result, query_text)
+    #   except Exception as e:
+    #     st.error(f"Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}). Повторите попытку позднее")
 
 
 if __name__ == "__main__":
