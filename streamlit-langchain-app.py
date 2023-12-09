@@ -28,6 +28,7 @@ def _generate_date_range(start_date, end_date):
     return date_range
 
 
+@st.cache_data
 def load_data(option, start_date, end_date):
     stocks = Market('stocks')
     dates = _generate_date_range(start_date, end_date)
@@ -100,7 +101,7 @@ def main():
       'Какая акция самая дорогая?',
       'По какой акции было больше всего сделок?',
       'Какая была средняя разница между ценой начала и ценой окончания торгов?',
-      'Другое - ваш запрос в свободной форме',
+      'Другое',
     ]
     query_text = st.selectbox('Выберите пример вопроса:', question_list, disabled=not selected_option)
 
@@ -112,7 +113,10 @@ def main():
         result = load_data(options_mapping[selected_option], start_date, end_date)
         generate_response(result, query_text)
       except Exception as e:
-        st.error(f"Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}). Повторите попытку позднее")
+        st.error(f"""
+                 Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}) 😲
+                 Повторите попытку позднее ❤️
+                 """)
 
 
 if __name__ == "__main__":
