@@ -24,7 +24,7 @@ st.text("""MVP решения от команды "Диванные экспер
 
 
 def _generate_date_range(start_date, end_date):
-    date_range = [start_date + timedelta(days=x) for x in range((end_date - start_date).days)]
+    date_range = [start_date + timedelta(days=x) for x in range((end_date - start_date).days + 1)]
     return date_range
 
 
@@ -128,7 +128,7 @@ def main():
     result = load_data('tradestats', yesterday, yesterday)
 
     # Group by 'Ticker' and calculate the sum of 'Number_of_Trades' for each ticker
-    total_trades_per_ticker = result.groupby('secid')['trades_b'].sum()
+    total_trades_per_ticker = result.groupby('ticker')['trades_b'].sum()
     # Sort the tickers based on the total number of trades in descending order
     sorted_tickers = total_trades_per_ticker.sort_values(ascending=False).index.tolist()
         
