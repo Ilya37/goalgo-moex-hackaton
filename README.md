@@ -1,10 +1,10 @@
 # goalgo-moex-hackaton
 Solutions for https://goalgo.ru/ hackaton
 
-## link to application
+## Link to application
 https://goalgo-moex-hackaton-divannye-eksperty.streamlit.app/
 
-## How to run 
+## How to run (develop mode)
 - install streamlit
 - install langchain
 - install langchain_experimental
