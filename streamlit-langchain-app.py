@@ -82,7 +82,7 @@ def generate_response(df, input_query):
 def main(): 
     # Options menu with business mapping
 
-    st.subheader('_1._ Проведите разведочный анализ данных биржи &#129299;', divider='rainbow')
+    st.subheader('Проведите разведочный анализ данных биржи', divider='rainbow')
 
     options_mapping = {
         "Сделки": "tradestats",
@@ -122,9 +122,9 @@ def main():
                  """)
         
     
-    st.subheader('_2._ Постройте торговую стратегию по интересующей акции &#129297;', divider='rainbow')
+    st.subheader('Постройте торговую стратегию по интересующей акции', divider='rainbow')
 
-    yesterday = (datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')
+    yesterday = (datetime.now() - timedelta(days=2)).date()
     result = load_data('tradestats', yesterday, yesterday)
 
     # Group by 'Ticker' and calculate the sum of 'Number_of_Trades' for each ticker
@@ -156,7 +156,7 @@ def main():
 
     selected_option = st.radio("Выберите нужную частоту сбора данных по свечам:", options=list(frequency_mapping.keys()), index=None)
 
-    
+
 
     # выберите страгетию
     # получите output
