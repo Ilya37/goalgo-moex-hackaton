@@ -171,8 +171,6 @@ def main():
 
     frequency = st.radio("Выберите нужную частоту сбора данных по свечам:", options=list(frequency_mapping.keys()), index=None)
 
-    ticker_df = load_ticker_data(selected_ticker, start_date_ticker, end_date_ticker, frequency)
-
     strategies = ["SMA Cross", "Mean Reversion"]
 
     selected_strategy = st.radio("Выберите нужную частоту сбора данных по свечам:", options=strategies, index=None)
@@ -180,6 +178,10 @@ def main():
     st.write("""Изучите дополнительную информацию о стратегиях [SMA Cross](https://docs.gunthy.org/docs/built-in-strategies/futures-strategies/builder/smacross/) 
              и [MeanReversion](https://www.cmcmarkets.com/en/trading-guides/mean-reversion) 
              """)
+
+    if selected_ticker is not None and frequency is not None \
+        and start_date_ticker is not None and end_date_ticker is not None:
+      ticker_df = load_ticker_data(selected_ticker, start_date_ticker, end_date_ticker, frequency)
 
     if selected_strategy == "SMA Cross":
        st.write(run_sma_cross_strategy_stats(ticker_df))
