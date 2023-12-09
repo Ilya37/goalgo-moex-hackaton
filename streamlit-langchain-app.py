@@ -30,11 +30,14 @@ def generate_date_range(start_date, end_date):
 
 def load_data(option, start_date, end_date):
     if option == 'tradestats':
-       return tradestats(start_date, end_date)
+       result_df = tradestats(start_date, end_date)
+       return result_df
     if option == 'orderstats':
-       return orderstats(start_date, end_date)
+       result_df = orderstats(start_date, end_date)
+       return result_df
     if option == 'obstats':
-       return obstats(start_date, end_date)
+       result_df = obstats(start_date, end_date)
+       return result_df
     
 
 # Define your business logic functions or variables
