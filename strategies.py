@@ -55,20 +55,22 @@ def run_sma_cross_strategy_stats(df):
     return stats
 
 
-def run_mean_reversion_stats(df):
-    sma_cross_strategy = Backtest(df, MeanReversion, commission=.002,
-                                  exclusive_orders=True)
-    stats = sma_cross_strategy.run()
-    return stats
-
-
 def run_sma_cross_strategy_plot(df):
     sma_cross_strategy = Backtest(df, SmaCross, commission=.002,
                                   exclusive_orders=True)
+    sma_cross_strategy.run()
     return sma_cross_strategy.plot()
+
+
+def run_mean_reversion_stats(df):
+    mean_reversion_strategy = Backtest(df, MeanReversion, commission=.002,
+                                       exclusive_orders=True)
+    stats = mean_reversion_strategy.run()
+    return stats
 
 
 def run_mean_reversion_plot(df):
-    sma_cross_strategy = Backtest(df, MeanReversion, commission=.002,
-                                  exclusive_orders=True)
-    return sma_cross_strategy.plot()
+    mean_reversion_strategy = Backtest(df, MeanReversion, commission=.002,
+                                       exclusive_orders=True)
+    mean_reversion_strategy.run()
+    return mean_reversion_strategy.plot()
