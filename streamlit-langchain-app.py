@@ -23,7 +23,7 @@ st.title('🛋️👨‍💻 GPT для анализа данных Москов
 st.text("""MVP решения от команды "Диванные эксперты" хакатона Go Algo от Московской биржи""")
 
 
-def _generate_date_range(start_date, end_date):
+def generate_date_range(start_date, end_date):
     date_range = [start_date + timedelta(days=x) for x in range((end_date - start_date).days + 1)]
     return date_range
 
@@ -31,7 +31,7 @@ def _generate_date_range(start_date, end_date):
 @st.cache_data
 def load_data(option, start_date, end_date):
     stocks = Market('stocks')
-    dates = _generate_date_range(start_date, end_date)
+    dates = generate_date_range(start_date, end_date)
 
     result_df = pd.DataFrame()
 
