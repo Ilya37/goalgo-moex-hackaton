@@ -33,14 +33,17 @@ def load_data(option, start_date, end_date):
        stocks = Market('stocks')
        dates = generate_date_range(start_date, end_date)
  
-       result_df = pd.DataFrame()
- 
-       for date in dates:
-           df = stocks.tradestats(date=date)
-           result_df = df
-           st.write(result_df.head(10))
-           st.write(type(result_df))
-           #result_df = pd.concat([result_df, df], ignore_index=True)
+       df = stocks.tradestats(date=start_date)
+       result_df = df
+       st.write(result_df.head(10))
+       st.write(type(result_df))
+   
+      #  for date in dates:
+      #      df = stocks.obstats(date=date)
+      #      result_df = df
+      #      st.write(result_df.head(10))
+      #      st.write(type(result_df))
+      #      #result_df = pd.concat([result_df, df], ignore_index=True)
  
        with st.expander('Предпросмотр полученных данных:'):
          st.write(result_df.head(10))
@@ -51,14 +54,17 @@ def load_data(option, start_date, end_date):
        stocks = Market('stocks')
        dates = generate_date_range(start_date, end_date)
  
-       result_df = pd.DataFrame()
- 
-       for date in dates:
-           df = stocks.orderstats(date=date)
-           result_df = df
-           st.write(result_df.head(10))
-           st.write(type(result_df))
-           #result_df = pd.concat([result_df, df], ignore_index=True)
+       df = stocks.orderstats(date=start_date)
+       result_df = df
+       st.write(result_df.head(10))
+       st.write(type(result_df))
+   
+      #  for date in dates:
+      #      df = stocks.obstats(date=date)
+      #      result_df = df
+      #      st.write(result_df.head(10))
+      #      st.write(type(result_df))
+      #      #result_df = pd.concat([result_df, df], ignore_index=True)
  
        with st.expander('Предпросмотр полученных данных:'):
          st.write(result_df.head(10))
@@ -70,13 +76,18 @@ def load_data(option, start_date, end_date):
        dates = generate_date_range(start_date, end_date)
    
        result_df = pd.DataFrame()
+
+       df = stocks.obstats(date=start_date)
+       result_df = df
+       st.write(result_df.head(10))
+       st.write(type(result_df))
    
-       for date in dates:
-           df = stocks.obstats(date=date)
-           result_df = df
-           st.write(result_df.head(10))
-           st.write(type(result_df))
-           #result_df = pd.concat([result_df, df], ignore_index=True)
+      #  for date in dates:
+      #      df = stocks.obstats(date=date)
+      #      result_df = df
+      #      st.write(result_df.head(10))
+      #      st.write(type(result_df))
+      #      #result_df = pd.concat([result_df, df], ignore_index=True)
        
        with st.expander('Предпросмотр полученных данных:'):
          st.write(result_df.head(10))
