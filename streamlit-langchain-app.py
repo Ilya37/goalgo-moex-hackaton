@@ -81,13 +81,14 @@ def generate_response(df, input_query):
 # Streamlit app
 def main(): 
     # Options menu with business mapping
+
+    st.subheader('_1._ Проведите разведочный анализ данных биржи &#129299;', divider='rainbow')
+
     options_mapping = {
         "Сделки": "tradestats",
         "Заявки": "orderstats",
         "Стакан заявок": "obstats",
     }
-
-    options = ["Сделки", "Заявки", "Стакан заявок"]
 
     # Date selection - Start Date
     start_date = st.date_input("Выберите начало периода:", datetime.today(), key="start_date")
@@ -115,9 +116,50 @@ def main():
         generate_response(result, query_text)
       except Exception as e:
         st.error(f"""
-                 Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}) 😲
+                 Проблемы с обработкой {selected_option}.
+                 Что-то сервисом (а точнее {str(e)}) 😲
                  Повторите попытку позднее ❤️
                  """)
+        
+    
+    st.subheader('_2._ Постройте торговую стратегию по интересующей акции &#129297;', divider='rainbow')
+
+    yesterday = (datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')
+    result = load_data('tradestats', yesterday, yesterday)
+
+    # Group by 'Ticker' and calculate the sum of 'Number_of_Trades' for each ticker
+    total_trades_per_ticker = result.groupby('ticker')['trades_b'].sum()
+    # Sort the tickers based on the total number of trades in descending order
+    sorted_tickers = total_trades_per_ticker.sort_values(ascending=False).index.tolist()
+        
+    # Use an expander to create a collapsible section
+    with st.expander("Options"):
+        # Display options in a dropdown inside the expander
+        st.caption('В списке представлены акции, торговавшиеся на бирже вчера, отсортированные по количеству торгов')
+        selected_option = st.selectbox('Выберите тикер акции:', sorted_tickers)
+
+    # Date selection - Start Date
+    start_date_ticker = st.date_input("Выберите начало периода по выбранному тикеру:", datetime.today(), key="start_date_ticker")
+
+    # Date selection - End Date
+    end_date_ticker = st.date_input("Выберите конец периода по выбранному тикеру:", datetime.today(), key="end_date_ticker")
+
+    frequency_mapping = {
+        "Минута": '1m',
+        "10 минут": '10m',
+        "Час": '1h',
+        "День": 'D',
+        "Неделя": 'W',
+        "Месяц": 'M',
+        "Квартал": 'Q',
+    }
+
+    selected_option = st.radio("Выберите нужную частоту сбора данных по свечам:", options=list(frequency_mapping.keys()), index=None)
+
+    
+
+    # выберите страгетию
+    # получите output
 
 
 if __name__ == "__main__":
