@@ -7,4 +7,4 @@ https://goalgo-moex-hackaton-divannye-eksperty.streamlit.app/
 ## How to run locally (develop mode)
 - install dependencies (`requirements.txt` file)
 - save secrets toml file to `~/.streamlit/secrets.toml`
-- run `python -m streamlit run .\streamlit-langchain-app.py`
+- run `python -m streamlit run streamlit-langchain-app.py`
