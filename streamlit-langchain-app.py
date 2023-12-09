@@ -181,7 +181,7 @@ def main():
 
     if selected_ticker is not None and frequency is not None \
         and start_date_ticker is not None and end_date_ticker is not None:
-      ticker_df = load_ticker_data(selected_ticker, start_date_ticker, end_date_ticker, frequency)
+      ticker_df = load_ticker_data(selected_ticker, start_date_ticker, end_date_ticker, frequency_mapping[frequency])
 
     if selected_strategy == "SMA Cross":
        st.write(run_sma_cross_strategy_stats(ticker_df))
