@@ -99,3 +99,4 @@ spark-warehouse/
 # other
 tmp/
 *secrets.toml
+test.ipynb

@@ -8,6 +8,9 @@ from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe
 from langchain.llms import OpenAI
 import streamlit as st
 from moexalgo import Market, Ticker
+from bokeh.models import Plot, GridPlot
+from bokeh.plotting import figure
+from bokeh.embed import file_html
 
 from strategies import *
 
@@ -199,10 +202,14 @@ def main():
     if selected_strategy == "SMA Cross":
        st.write(pd.DataFrame(run_sma_cross_strategy_stats(ticker_df)))
        st.write(run_sma_cross_strategy_plot(ticker_df))
+       # html_content = file_html(run_sma_cross_strategy_plot(ticker_df), CDN, "Result")
+       # st.components.v1.html(html_content, width=800, height=400)
 
     if selected_strategy == "Mean Reversion":
        st.write(pd.DataFrame(run_mean_reversion_stats(ticker_df)))
        st.write(run_mean_reversion_plot(ticker_df))
+       # html_content = file_html(run_mean_reversion_plot(ticker_df), CDN, "Result")
+       # st.components.v1.html(html_content, width=800, height=400)
 
 
 if __name__ == "__main__":
