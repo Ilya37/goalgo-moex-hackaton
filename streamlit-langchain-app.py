@@ -33,17 +33,24 @@ def load_data(option, start_date, end_date):
        stocks = Market('stocks')
        dates = generate_date_range(start_date, end_date)
  
-       df = stocks.tradestats(date=start_date)
-       result_df = pd.DataFrame(df)
-       st.write(result_df.head(10))
-       st.write(type(result_df))
+      #  df = stocks.tradestats(date=start_date)
+      #  result_df = pd.DataFrame(df)
+      #  st.write(result_df.head(10))
+      #  st.write(type(result_df))
    
-      #  for date in dates:
-      #      df = stocks.obstats(date=date)
-      #      result_df = df
-      #      st.write(result_df.head(10))
-      #      st.write(type(result_df))
-      #      #result_df = pd.concat([result_df, df], ignore_index=True)
+      # #  for date in dates:
+      # #      df = stocks.obstats(date=date)
+      # #      result_df = df
+      # #      st.write(result_df.head(10))
+      # #      st.write(type(result_df))
+      # #      #result_df = pd.concat([result_df, df], ignore_index=True)
+
+       result_df = pd.DataFrame()
+   
+       for date in dates:
+           response = stocks.tradestats(date=date)
+           df = pd.DataFrame(response)
+           result_df = pd.concat([result_df, df], ignore_index=True)
  
        with st.expander('Предпросмотр полученных данных:'):
          st.write(result_df.head(10))
@@ -54,17 +61,24 @@ def load_data(option, start_date, end_date):
        stocks = Market('stocks')
        dates = generate_date_range(start_date, end_date)
  
-       df = stocks.tradestats(date=start_date)
-       result_df = pd.DataFrame(df)
-       st.write(result_df.head(10))
-       st.write(type(result_df))
+      #  df = stocks.tradestats(date=start_date)
+      #  result_df = pd.DataFrame(df)
+      #  st.write(result_df.head(10))
+      #  st.write(type(result_df))
    
-      #  for date in dates:
-      #      df = stocks.obstats(date=date)
-      #      result_df = df
-      #      st.write(result_df.head(10))
-      #      st.write(type(result_df))
-      #      #result_df = pd.concat([result_df, df], ignore_index=True)
+      # #  for date in dates:
+      # #      df = stocks.obstats(date=date)
+      # #      result_df = df
+      # #      st.write(result_df.head(10))
+      # #      st.write(type(result_df))
+      # #      #result_df = pd.concat([result_df, df], ignore_index=True)
+
+       result_df = pd.DataFrame()
+   
+       for date in dates:
+           response = stocks.orderstats(date=date)
+           df = pd.DataFrame(response)
+           result_df = pd.concat([result_df, df], ignore_index=True)
  
        with st.expander('Предпросмотр полученных данных:'):
          st.write(result_df.head(10))
@@ -76,18 +90,11 @@ def load_data(option, start_date, end_date):
        dates = generate_date_range(start_date, end_date)
    
        result_df = pd.DataFrame()
-
-       df = stocks.tradestats(date=start_date)
-       result_df = pd.DataFrame(df)
-       st.write(result_df.head(10))
-       st.write(type(result_df))
    
-      #  for date in dates:
-      #      df = stocks.obstats(date=date)
-      #      result_df = df
-      #      st.write(result_df.head(10))
-      #      st.write(type(result_df))
-      #      #result_df = pd.concat([result_df, df], ignore_index=True)
+       for date in dates:
+           response = stocks.obstats(date=date)
+           df = pd.DataFrame(response)
+           result_df = pd.concat([result_df, df], ignore_index=True)
        
        with st.expander('Предпросмотр полученных данных:'):
          st.write(result_df.head(10))
@@ -181,19 +188,15 @@ def main():
     ]
     query_text = st.selectbox('Выберите пример вопроса:', question_list, disabled=not selected_option)
 
-    result = load_data(options_mapping[selected_option], start_date, end_date)
-
-    result.head()
-
-    # if query_text == 'Другое':
-    #   query_text = st.text_input('Введите ваш запрос:', disabled=not selected_option)
-    # if selected_option is not None:
-    #   st.header('Результаты:')
-    #   try:
-    #     result = load_data(options_mapping[selected_option], start_date, end_date)
-    #     generate_response(result, query_text)
-    #   except Exception as e:
-    #     st.error(f"Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}). Повторите попытку позднее")
+    if query_text == 'Другое':
+      query_text = st.text_input('Введите ваш запрос:', disabled=not selected_option)
+    if selected_option is not None:
+      st.header('Результаты:')
+      try:
+        result = load_data(options_mapping[selected_option], start_date, end_date)
+        generate_response(result, query_text)
+      except Exception as e:
+        st.error(f"Проблемы с обработкой {selected_option} - что-то сервисом (а точнее {str(e)}). Повторите попытку позднее")
 
 
 if __name__ == "__main__":
