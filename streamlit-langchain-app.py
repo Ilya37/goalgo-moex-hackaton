@@ -37,7 +37,10 @@ def load_data(option, start_date, end_date):
  
        for date in dates:
            df = stocks.tradestats(date=date)
-           result_df = pd.concat([result_df, df], ignore_index=True)
+           result_df = df
+           st.write(result_df.head(10))
+           st.write(type(result_df))
+           #result_df = pd.concat([result_df, df], ignore_index=True)
  
        with st.expander('Предпросмотр полученных данных:'):
          st.write(result_df.head(10))
@@ -52,7 +55,10 @@ def load_data(option, start_date, end_date):
  
        for date in dates:
            df = stocks.orderstats(date=date)
-           result_df = pd.concat([result_df, df], ignore_index=True)
+           result_df = df
+           st.write(result_df.head(10))
+           st.write(type(result_df))
+           #result_df = pd.concat([result_df, df], ignore_index=True)
  
        with st.expander('Предпросмотр полученных данных:'):
          st.write(result_df.head(10))
@@ -67,7 +73,10 @@ def load_data(option, start_date, end_date):
    
        for date in dates:
            df = stocks.obstats(date=date)
-           result_df = pd.concat([result_df, df], ignore_index=True)
+           result_df = df
+           st.write(result_df.head(10))
+           st.write(type(result_df))
+           #result_df = pd.concat([result_df, df], ignore_index=True)
        
        with st.expander('Предпросмотр полученных данных:'):
          st.write(result_df.head(10))
