@@ -34,7 +34,7 @@ def load_data(option, start_date, end_date):
        dates = generate_date_range(start_date, end_date)
  
        df = stocks.tradestats(date=start_date)
-       result_df = df
+       result_df = pd.DataFrame(df)
        st.write(result_df.head(10))
        st.write(type(result_df))
    
@@ -54,8 +54,8 @@ def load_data(option, start_date, end_date):
        stocks = Market('stocks')
        dates = generate_date_range(start_date, end_date)
  
-       df = stocks.orderstats(date=start_date)
-       result_df = df
+       df = stocks.tradestats(date=start_date)
+       result_df = pd.DataFrame(df)
        st.write(result_df.head(10))
        st.write(type(result_df))
    
@@ -77,8 +77,8 @@ def load_data(option, start_date, end_date):
    
        result_df = pd.DataFrame()
 
-       df = stocks.obstats(date=start_date)
-       result_df = df
+       df = stocks.tradestats(date=start_date)
+       result_df = pd.DataFrame(df)
        st.write(result_df.head(10))
        st.write(type(result_df))
    
