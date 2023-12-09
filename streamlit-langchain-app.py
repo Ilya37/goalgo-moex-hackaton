@@ -185,8 +185,10 @@ def main():
 
     if selected_strategy == "SMA Cross":
        st.write(run_sma_cross_strategy_stats(ticker_df))
+       st.write(run_sma_cross_strategy_plot(ticker_df))
     if selected_strategy == "Mean Reversion":
        st.write(run_mean_reversion_stats(ticker_df))
+       st.write(run_mean_reversion_plot(ticker_df))
 
 
 if __name__ == "__main__":
