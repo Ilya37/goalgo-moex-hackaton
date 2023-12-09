@@ -7,11 +7,9 @@ from langchain.chat_models import ChatOpenAI
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
 from langchain.llms import OpenAI
 import streamlit as st
-from streamlit.logger import get_logger
+from moexalgo import Market, Ticker
 
-from moexalgo import Market
-
-logger = get_logger(__name__)
+from strategies import *
 
 TOKEN = st.secrets["TOKEN"]
 
@@ -29,7 +27,7 @@ def generate_date_range(start_date, end_date):
 
 
 @st.cache_data
-def load_data(option, start_date, end_date):
+def load_market_data(option, start_date, end_date):
     stocks = Market('stocks')
     dates = generate_date_range(start_date, end_date)
 
@@ -67,6 +65,23 @@ def load_data(option, start_date, end_date):
          st.write(result_df.head(10))
    
        return result_df
+    
+
+@st.cache_data
+def load_ticker_data(selected_ticker, start_date_ticker, end_date_ticker, frequency):
+    ticker = Ticker(selected_ticker)
+    response = ticker.candles(date=start_date_ticker, till_date=end_date_ticker, period=frequency) 
+    result_df = pd.DataFrame(response)
+    result_df = result_df[['open', 'close', 'high', 'low', 'volume']]
+    result_df.rename(columns={'open': 'Open', 
+                              'close': 'Close', 
+                              'high': 'High', 
+                              'low': 'Low',
+                              'volume': 'Volume'}, inplace=True)
+    with st.expander('Предпросмотр полученных данных по тикеру:'):
+         st.write(result_df.head(10))
+
+    return result_df
 
 
 # Generate LLM response
@@ -112,7 +127,7 @@ def main():
     if selected_option is not None:
       st.header('Результаты:')
       try:
-        result = load_data(options_mapping[selected_option], start_date, end_date)
+        result = load_market_data(options_mapping[selected_option], start_date, end_date)
         generate_response(result, query_text)
       except Exception as e:
         st.error(f"""
@@ -125,7 +140,7 @@ def main():
     st.subheader('Постройте торговую стратегию по интересующей акции', divider='rainbow')
 
     yesterday = (datetime.now() - timedelta(days=2)).date()
-    result = load_data('tradestats', yesterday, yesterday)
+    result = load_market_data('tradestats', yesterday, yesterday)
 
     # Group by 'Ticker' and calculate the sum of 'Number_of_Trades' for each ticker
     total_trades_per_ticker = result.groupby('secid')['trades_b'].sum()
@@ -133,10 +148,10 @@ def main():
     sorted_tickers = total_trades_per_ticker.sort_values(ascending=False).index.tolist()
         
     # Use an expander to create a collapsible section
-    with st.expander("Options"):
+    with st.expander("Выбор тикера акции:"):
         # Display options in a dropdown inside the expander
         st.caption('В списке представлены акции, торговавшиеся на бирже вчера, отсортированные по количеству торгов')
-        selected_option = st.selectbox('Выберите тикер акции:', sorted_tickers)
+        selected_ticker = st.selectbox('Выберите тикер акции:', sorted_tickers)
 
     # Date selection - Start Date
     start_date_ticker = st.date_input("Выберите начало периода по выбранному тикеру:", datetime.today(), key="start_date_ticker")
@@ -154,12 +169,22 @@ def main():
         "Квартал": 'Q',
     }
 
-    selected_option = st.radio("Выберите нужную частоту сбора данных по свечам:", options=list(frequency_mapping.keys()), index=None)
+    frequency = st.radio("Выберите нужную частоту сбора данных по свечам:", options=list(frequency_mapping.keys()), index=None)
 
+    ticker_df = load_ticker_data(selected_ticker, start_date_ticker, end_date_ticker, frequency)
 
+    strategies = ["SMA Cross", "Mean Reversion"]
 
-    # выберите страгетию
-    # получите output
+    selected_strategy = st.radio("Выберите нужную частоту сбора данных по свечам:", options=strategies, index=None)
+
+    st.write("""Изучите дополнительную информацию о стратегиях [SMA Cross](https://docs.gunthy.org/docs/built-in-strategies/futures-strategies/builder/smacross/) 
+             и [MeanReversion](https://www.cmcmarkets.com/en/trading-guides/mean-reversion) 
+             """)
+
+    if selected_strategy == "SMA Cross":
+       st.write(run_sma_cross_strategy_stats(ticker_df))
+    if selected_strategy == "Mean Reversion":
+       st.write(run_mean_reversion_stats(ticker_df))
 
 
 if __name__ == "__main__":
