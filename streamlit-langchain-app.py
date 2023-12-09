@@ -72,7 +72,8 @@ def load_data(option, start_date, end_date):
 # Generate LLM response
 def generate_response(df, input_query):
   llm = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.2, openai_api_key=TOKEN)
-  agent = create_pandas_dataframe_agent(llm, df, verbose=True, agent_type=AgentType.OPENAI_FUNCTIONS)
+  agent = create_pandas_dataframe_agent(llm, df, verbose=True, 
+                                        agent_type=AgentType.OPENAI_FUNCTIONS, handle_parsing_errors=True)
   response = agent.run(input_query)
   return st.success(response, icon="✅")
 
