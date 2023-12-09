@@ -23,133 +23,49 @@ st.title('🛋️👨‍💻 GPT для анализа данных Москов
 st.text("""MVP решения от команды "Диванные эксперты" хакатона Go Algo от Московской биржи""")
 
 
-def generate_date_range(start_date, end_date):
+def _generate_date_range(start_date, end_date):
     date_range = [start_date + timedelta(days=x) for x in range((end_date - start_date).days)]
     return date_range
 
 
 def load_data(option, start_date, end_date):
-    if option == 'tradestats':
-       stocks = Market('stocks')
-       dates = generate_date_range(start_date, end_date)
- 
-      #  df = stocks.tradestats(date=start_date)
-      #  result_df = pd.DataFrame(df)
-      #  st.write(result_df.head(10))
-      #  st.write(type(result_df))
-   
-      # #  for date in dates:
-      # #      df = stocks.obstats(date=date)
-      # #      result_df = df
-      # #      st.write(result_df.head(10))
-      # #      st.write(type(result_df))
-      # #      #result_df = pd.concat([result_df, df], ignore_index=True)
+    stocks = Market('stocks')
+    dates = _generate_date_range(start_date, end_date)
 
-       result_df = pd.DataFrame()
-   
+    result_df = pd.DataFrame()
+
+    if option == 'tradestats':
        for date in dates:
            response = stocks.tradestats(date=date)
            df = pd.DataFrame(response)
            result_df = pd.concat([result_df, df], ignore_index=True)
  
-       with st.expander('Предпросмотр полученных данных:'):
+       with st.expander('Предпросмотр полученных данных по сделкам:'):
          st.write(result_df.head(10))
        
        return result_df
 
-    if option == 'orderstats':
-       stocks = Market('stocks')
-       dates = generate_date_range(start_date, end_date)
- 
-      #  df = stocks.tradestats(date=start_date)
-      #  result_df = pd.DataFrame(df)
-      #  st.write(result_df.head(10))
-      #  st.write(type(result_df))
-   
-      # #  for date in dates:
-      # #      df = stocks.obstats(date=date)
-      # #      result_df = df
-      # #      st.write(result_df.head(10))
-      # #      st.write(type(result_df))
-      # #      #result_df = pd.concat([result_df, df], ignore_index=True)
-
-       result_df = pd.DataFrame()
-   
+    if option == 'orderstats':   
        for date in dates:
            response = stocks.orderstats(date=date)
            df = pd.DataFrame(response)
            result_df = pd.concat([result_df, df], ignore_index=True)
  
-       with st.expander('Предпросмотр полученных данных:'):
+       with st.expander('Предпросмотр полученных данных по заявкам:'):
          st.write(result_df.head(10))
        
        return result_df
     
     if option == 'obstats':
-       stocks = Market('stocks')
-       dates = generate_date_range(start_date, end_date)
-   
-       result_df = pd.DataFrame()
-   
        for date in dates:
            response = stocks.obstats(date=date)
            df = pd.DataFrame(response)
            result_df = pd.concat([result_df, df], ignore_index=True)
        
-       with st.expander('Предпросмотр полученных данных:'):
+       with st.expander('Предпросмотр полученных данных по стаканам заявок:'):
          st.write(result_df.head(10))
    
        return result_df
-    
-
-# # Define your business logic functions or variables
-# def tradestats(start_date, end_date):
-#     stocks = Market('stocks')
-#     dates = generate_date_range(start_date, end_date)
-
-#     result_df = pd.DataFrame()
-
-#     for date in dates:
-#         df = stocks.tradestats(date=date)
-#         result_df = pd.concat([result_df, df], ignore_index=True)
-
-#     with st.expander('Предпросмотр полученных данных:'):
-#       st.write(result_df.head(10))
-    
-#     return result_df
-
-
-# def orderstats(start_date, end_date):
-#     stocks = Market('stocks')
-#     dates = generate_date_range(start_date, end_date)
-
-#     result_df = pd.DataFrame()
-
-#     for date in dates:
-#         df = stocks.orderstats(date=date)
-#         result_df = pd.concat([result_df, df], ignore_index=True)
-
-#     with st.expander('Предпросмотр полученных данных:'):
-#       st.write(result_df.head(10))
-    
-#     return result_df
-
-
-# def obstats(start_date, end_date):
-#     stocks = Market('stocks')
-#     dates = generate_date_range(start_date, end_date)
-
-#     result_df = pd.DataFrame()
-
-#     for date in dates:
-#         df = stocks.obstats(date=date)
-#         result_df = pd.concat([result_df, df], ignore_index=True)
-    
-#     with st.expander('Предпросмотр полученных данных:'):
-#       st.write(result_df.head(10))
-
-#     return result_df
-
 
 
 # Generate LLM response
@@ -157,6 +73,7 @@ def generate_response(df, input_query):
   llm = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.2, openai_api_key=TOKEN)
   agent = create_pandas_dataframe_agent(llm, df, verbose=True, agent_type=AgentType.OPENAI_FUNCTIONS)
   response = agent.run(input_query)
+  st.write('Детальный ответ:', response)
   return st.success(response, icon="✅")
 
 
