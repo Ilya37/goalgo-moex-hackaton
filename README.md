@@ -14,4 +14,4 @@ https://goalgo-moex-hackaton-divannye-eksperty.streamlit.app/
 - save secrets toml file to `~/.streamlit/secrets.toml`
 - run `python -m streamlit run streamlit-langchain-app.py`
 
-> You can get plots in html file when runnung strategies only if you run application locally! 
+> You can get plots in html file when running strategies only if you run application locally! 
